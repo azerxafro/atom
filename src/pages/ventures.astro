@@ -4,26 +4,26 @@ import Layout from '../layouts/Layout.astro';
 const ventures = [
 	{
 		title: "Atom Imagixio",
-		description: "Cutting-edge software solutions and digital innovations",
-		link: "#",
+		description: "Next-level tech that'll blow your mind 🚀",
+		link: "/ventures/imagixio",
 		logo: "/atom-imagixio-logo.png"
 	},
 	{
 		title: "Atom Mobile",
-		description: "Just Fix it!",
-		link: "#",
+		description: "Your phone's new BFF - we just get it! 📱",
+		link: "/ventures/mobile",
 		logo: "/atom-mobile-logo.png"
 	},
 	{
 		title: "Atom Melon",
-		description: "Revolutionary beauty & healthcare technology and services",
-		link: "#",
+		description: "Glow up your life with smart beauty tech ✨",
+		link: "/ventures/melon",
 		logo: "/atom-melon-logo.png"
 	},
 	{
 		title: "Atom Optimus",
-		description: "Modern solutions and investment strategies",
-		link: "#",
+		description: "Making money moves with future-proof solutions 💎",
+		link: "/ventures/optimus",
 		logo: "/atom-optimus-logo.png"
 	}
 ];
@@ -32,16 +32,28 @@ const ventures = [
 <Layout title="Our Ventures - Atom">
 	<div class="container">
 		<h1>Our Ventures</h1>
-		<p class="subtitle">Discover our diverse portfolio of innovative companies</p>
+		<p class="subtitle">Check out our super cool family of brands</p>
 		
 		<div class="ventures-grid">
 			{ventures.map(venture => (
 				<div class="venture-card">
 					<div class="venture-logo">
-						<img src={venture.logo} alt={`${venture.title} Logo`} />
+						<img 
+							src={venture.logo} 
+							alt={`${venture.title} Logo`}
+							height="100"
+							loading="lazy"
+						/>
 					</div>
+					<h2>{venture.title}</h2>
 					<p>{venture.description}</p>
-					<a href={venture.link} class="btn btn-accent">Learn More</a>
+					<a href={venture.link} class="btn btn-gradient">
+						<span>Learn More</span>
+						<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+							<line x1="5" y1="12" x2="19" y2="12"></line>
+							<polyline points="12 5 19 12 12 19"></polyline>
+						</svg>
+					</a>
 				</div>
 			))}
 		</div>
@@ -49,53 +61,181 @@ const ventures = [
 </Layout>
 
 <style>
+	:root {
+		--gradient-1: linear-gradient(135deg, #FF6B6B, #FFE66D);
+		--gradient-2: linear-gradient(135deg, #4ECDC4, #556270);
+		--gradient-3: linear-gradient(135deg, #FF8C94, #FFB3BA);
+		--gradient-4: linear-gradient(135deg, #6C63FF, #3F3D56);
+	}
+
 	h1 {
 		color: var(--primary);
-		font-size: 2.5rem;
+		font-size: clamp(2rem, 5vw, 3rem);
 		margin: 2rem 0 1rem;
 		text-align: center;
+		font-weight: 800;
+		background: linear-gradient(135deg, var(--primary), var(--secondary));
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+		background-clip: text;
 	}
 
 	.subtitle {
 		text-align: center;
 		color: var(--text);
 		margin-bottom: 3rem;
-		font-size: 1.2rem;
+		font-size: clamp(1.1rem, 3vw, 1.3rem);
+		font-weight: 500;
 	}
 
 	.ventures-grid {
 		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+		grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
 		gap: 2rem;
 		margin-top: 2rem;
+		padding: 0.5rem;
 	}
 
 	.venture-card {
-		background-color: white;
-		border: 1px solid var(--neutral);
-		border-radius: 8px;
+		background: rgba(255, 255, 255, 0.8);
+		backdrop-filter: blur(10px);
+		border-radius: 24px;
 		padding: 2rem;
-		transition: transform 0.3s ease;
-		box-shadow: 0 2px 4px rgba(255, 102, 0, 0.1);
-		text-align: center;
+		transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+		position: relative;
+		overflow: hidden;
+		border: 1px solid rgba(255, 255, 255, 0.1);
+		box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+	}
+
+	.venture-card::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		height: 4px;
+		background: var(--gradient-1);
+		opacity: 0;
+		transition: opacity 0.3s ease;
+	}
+
+	.venture-card:nth-child(2)::before {
+		background: var(--gradient-2);
+	}
+
+	.venture-card:nth-child(3)::before {
+		background: var(--gradient-3);
+	}
+
+	.venture-card:nth-child(4)::before {
+		background: var(--gradient-4);
 	}
 
 	.venture-card:hover {
-		transform: translateY(-5px);
+		transform: translateY(-8px);
+		box-shadow: 0 12px 48px rgba(0, 0, 0, 0.15);
+	}
+
+	.venture-card:hover::before {
+		opacity: 1;
 	}
 
 	.venture-logo {
+		height: 100px;
 		margin-bottom: 1.5rem;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		transition: transform 0.3s ease;
+	}
+
+	.venture-card:hover .venture-logo {
+		transform: scale(1.05);
 	}
 
 	.venture-logo img {
-		height: 60px;
+		height: 100px;
 		width: auto;
-		margin: 0 auto;
+		object-fit: contain;
+		object-position: center;
+		image-rendering: -webkit-optimize-contrast;
+		image-rendering: crisp-edges;
+	}
+
+	.venture-card h2 {
+		color: var(--primary);
+		font-size: 1.5rem;
+		margin-bottom: 1rem;
+		font-weight: 700;
 	}
 
 	.venture-card p {
 		margin-bottom: 1.5rem;
 		color: var(--text);
+		font-size: 1.1rem;
+		line-height: 1.5;
+	}
+
+	.btn-gradient {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.5rem;
+		padding: 0.875rem 1.5rem;
+		border-radius: 12px;
+		font-weight: 600;
+		font-size: 1.1rem;
+		background: var(--primary);
+		color: white;
+		transition: all 0.3s ease;
+		width: 100%;
+		justify-content: center;
+	}
+
+	.btn-gradient svg {
+		transition: transform 0.3s ease;
+	}
+
+	.btn-gradient:hover svg {
+		transform: translateX(4px);
+	}
+
+	.btn-gradient:hover {
+		background: var(--dark);
+		transform: translateY(-2px);
+	}
+
+	@media (max-width: 768px) {
+		.ventures-grid {
+			gap: 1.5rem;
+			padding: 0;
+		}
+
+		.venture-card {
+			padding: 1.5rem;
+		}
+
+		.btn-gradient {
+			padding: 1rem;
+			font-size: 1rem;
+		}
+	}
+
+	@media (hover: none) {
+		.venture-card:hover {
+			transform: none;
+		}
+
+		.venture-card:hover .venture-logo {
+			transform: none;
+		}
+
+		.btn-gradient {
+			min-height: 44px;
+		}
+
+		.btn-gradient:hover {
+			transform: none;
+		}
 	}
 </style>

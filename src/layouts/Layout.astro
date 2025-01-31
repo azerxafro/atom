@@ -11,7 +11,8 @@ const { title } = Astro.props;
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="description" content="Atom - Innovating Across Industries" />
-		<meta name="viewport" content="width=device-width" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+		<meta name="theme-color" content="#FF6600" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
@@ -20,9 +21,14 @@ const { title } = Astro.props;
 		<header>
 			<nav>
 				<div class="logo">
-					<img src="/atom-logo.png" alt="Atom Logo" height="40" />
+					<img src="/atom-logo.png" alt="Atom Logo" width="120" height="40" loading="eager" />
 				</div>
-				<ul>
+				<button class="menu-toggle" aria-label="Toggle menu">
+					<span></span>
+					<span></span>
+					<span></span>
+				</button>
+				<ul class="nav-menu">
 					<li><a href="/">Home</a></li>
 					<li><a href="/ventures">Ventures</a></li>
 					<li><a href="/contact">Contact</a></li>
@@ -35,7 +41,7 @@ const { title } = Astro.props;
 		<footer>
 			<div class="footer-content">
 				<div class="footer-logo">
-					<img src="/atom-logo-white.png" alt="Atom Logo" height="30" />
+					<img src="/atom-logo-white.png" alt="Atom Logo" width="90" height="30" loading="lazy" />
 				</div>
 				<div class="footer-links">
 					<p>&copy; 2024 Atom. All rights reserved.</p>
@@ -44,6 +50,53 @@ const { title } = Astro.props;
 		</footer>
 	</body>
 </html>
+
+<script>
+	// Mobile menu functionality
+	const menuToggle = document.querySelector('.menu-toggle');
+	const navMenu = document.querySelector('.nav-menu');
+	const header = document.querySelector('header');
+
+	menuToggle?.addEventListener('click', () => {
+		navMenu?.classList.toggle('active');
+		menuToggle?.classList.toggle('active');
+	});
+
+	// Close menu when clicking outside
+	document.addEventListener('click', (e) => {
+		if (!header?.contains(e.target as Node)) {
+			navMenu?.classList.remove('active');
+			menuToggle?.classList.remove('active');
+		}
+	});
+
+	// Handle touch gestures
+	let touchStartX = 0;
+	let touchEndX = 0;
+
+	document.addEventListener('touchstart', (e) => {
+		touchStartX = e.changedTouches[0].screenX;
+	}, false);
+
+	document.addEventListener('touchend', (e) => {
+		touchEndX = e.changedTouches[0].screenX;
+		handleSwipe();
+	}, false);
+
+	function handleSwipe() {
+		const swipeThreshold = 50;
+		if (touchEndX < touchStartX - swipeThreshold) {
+			// Swipe left - open menu
+			navMenu?.classList.add('active');
+			menuToggle?.classList.add('active');
+		} else if (touchEndX > touchStartX + swipeThreshold) {
+			// Swipe right - close menu
+			navMenu?.classList.remove('active');
+			menuToggle?.classList.remove('active');
+		}
+	}
+</script>
+
 <style is:global>
 	:root {
 		--primary: #FF6600;
@@ -52,18 +105,24 @@ const { title } = Astro.props;
 		--neutral: #FFF5E6;
 		--text: #663300;
 		--dark: #CC5200;
+		--header-height: 4rem;
+		--container-padding: 1rem;
 	}
 	
 	* {
 		margin: 0;
 		padding: 0;
 		box-sizing: border-box;
+		-webkit-tap-highlight-color: transparent;
 	}
 	
 	html {
-		font-family: system-ui, sans-serif;
+		font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
 		background: var(--neutral);
 		color: var(--text);
+		font-size: 16px;
+		line-height: 1.5;
+		scroll-behavior: smooth;
 	}
 
 	body {
@@ -79,16 +138,55 @@ const { title } = Astro.props;
 	header {
 		background-color: white;
 		box-shadow: 0 2px 4px rgba(255, 102, 0, 0.1);
-		padding: 1rem 0;
+		position: sticky;
+		top: 0;
+		z-index: 1000;
+		height: var(--header-height);
 	}
 
 	nav {
 		max-width: 1200px;
 		margin: 0 auto;
-		padding: 0 2rem;
+		padding: 0 var(--container-padding);
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
+		height: 100%;
+	}
+
+	.logo img {
+		height: 40px;
+		width: auto;
+	}
+
+	.menu-toggle {
+		display: none;
+		background: none;
+		border: none;
+		cursor: pointer;
+		padding: 0.5rem;
+		z-index: 1001;
+	}
+
+	.menu-toggle span {
+		display: block;
+		width: 24px;
+		height: 2px;
+		background-color: var(--primary);
+		margin: 5px 0;
+		transition: 0.3s;
+	}
+
+	.menu-toggle.active span:nth-child(1) {
+		transform: rotate(45deg) translate(5px, 5px);
+	}
+
+	.menu-toggle.active span:nth-child(2) {
+		opacity: 0;
+	}
+
+	.menu-toggle.active span:nth-child(3) {
+		transform: rotate(-45deg) translate(7px, -7px);
 	}
 
 	nav ul {
@@ -102,6 +200,8 @@ const { title } = Astro.props;
 		color: var(--text);
 		font-weight: 500;
 		transition: color 0.3s ease;
+		padding: 0.5rem;
+		font-size: 1rem;
 	}
 
 	nav a:hover {
@@ -111,23 +211,24 @@ const { title } = Astro.props;
 	footer {
 		background-color: var(--primary);
 		color: white;
-		padding: 2rem 0;
+		padding: 2rem var(--container-padding);
 		margin-top: 4rem;
 	}
 
 	.footer-content {
 		max-width: 1200px;
 		margin: 0 auto;
-		padding: 0 2rem;
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
+		flex-wrap: wrap;
+		gap: 1rem;
 	}
 
 	.container {
 		max-width: 1200px;
 		margin: 0 auto;
-		padding: 2rem;
+		padding: 2rem var(--container-padding);
 	}
 
 	.btn {
@@ -138,6 +239,11 @@ const { title } = Astro.props;
 		text-decoration: none;
 		border-radius: 4px;
 		transition: background-color 0.3s ease;
+		font-size: 1rem;
+		border: none;
+		cursor: pointer;
+		touch-action: manipulation;
+		-webkit-appearance: none;
 	}
 
 	.btn:hover {
@@ -151,5 +257,75 @@ const { title } = Astro.props;
 
 	.btn-accent:hover {
 		background-color: #FFE033;
+	}
+
+	img {
+		max-width: 100%;
+		height: auto;
+	}
+
+	@media (max-width: 768px) {
+		.menu-toggle {
+			display: block;
+		}
+
+		.nav-menu {
+			position: fixed;
+			top: var(--header-height);
+			right: -100%;
+			width: 80%;
+			max-width: 300px;
+			height: calc(100vh - var(--header-height));
+			background-color: white;
+			flex-direction: column;
+			padding: 2rem;
+			transition: 0.3s ease-in-out;
+			box-shadow: -2px 0 4px rgba(0, 0, 0, 0.1);
+		}
+
+		.nav-menu.active {
+			right: 0;
+		}
+
+		nav ul {
+			flex-direction: column;
+			gap: 1.5rem;
+		}
+
+		nav a {
+			display: block;
+			padding: 0.75rem;
+			font-size: 1.1rem;
+		}
+
+		.footer-content {
+			justify-content: center;
+			text-align: center;
+		}
+	}
+
+	@media (max-width: 480px) {
+		:root {
+			--container-padding: 1rem;
+		}
+
+		.btn {
+			width: 100%;
+			text-align: center;
+		}
+	}
+
+	/* Touch optimization */
+	@media (hover: none) {
+		.btn, nav a {
+			padding: 0.8rem 1rem;
+		}
+
+		nav a {
+			min-height: 44px;
+			min-width: 44px;
+			display: flex;
+			align-items: center;
+		}
 	}
 </style>

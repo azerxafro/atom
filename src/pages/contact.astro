@@ -16,28 +16,48 @@ import Layout from '../layouts/Layout.astro';
 				</div>
 				<div class="info-item">
 					<h3>Email</h3>
-					<p>info@atomcompany.com</p>
+					<a href="mailto:info@atomcompany.com" class="contact-link">info@atomcompany.com</a>
 				</div>
 				<div class="info-item">
 					<h3>Phone</h3>
-					<p>+1 (555) 123-4567</p>
+					<a href="tel:+15551234567" class="contact-link">+1 (555) 123-4567</a>
 				</div>
 			</div>
 
 			<div class="contact-form">
 				<h2>Send us a message</h2>
-				<form>
+				<form id="contactForm" novalidate>
 					<div class="form-group">
 						<label for="name">Name</label>
-						<input type="text" id="name" name="name" required>
+						<input 
+							type="text" 
+							id="name" 
+							name="name" 
+							required 
+							minlength="2"
+							autocomplete="name"
+							pattern="[A-Za-z\s]+"
+						>
 					</div>
 					<div class="form-group">
 						<label for="email">Email</label>
-						<input type="email" id="email" name="email" required>
+						<input 
+							type="email" 
+							id="email" 
+							name="email" 
+							required
+							autocomplete="email"
+						>
 					</div>
 					<div class="form-group">
 						<label for="message">Message</label>
-						<textarea id="message" name="message" rows="5" required></textarea>
+						<textarea 
+							id="message" 
+							name="message" 
+							rows="5" 
+							required
+							minlength="10"
+						></textarea>
 					</div>
 					<button type="submit" class="btn">Send Message</button>
 				</form>
@@ -46,10 +66,37 @@ import Layout from '../layouts/Layout.astro';
 	</div>
 </Layout>
 
+<script>
+	const form = document.getElementById('contactForm') as HTMLFormElement;
+	const inputs = form?.querySelectorAll('input, textarea');
+
+	inputs?.forEach(input => {
+		input.addEventListener('invalid', (e) => {
+			e.preventDefault();
+			input.classList.add('error');
+		});
+
+		input.addEventListener('input', () => {
+			input.classList.remove('error');
+		});
+	});
+
+	form?.addEventListener('submit', (e) => {
+		e.preventDefault();
+		if (form.checkValidity()) {
+			// Handle form submission
+			console.log('Form submitted');
+		} else {
+			// Show validation messages
+			form.reportValidity();
+		}
+	});
+</script>
+
 <style>
 	h1 {
 		color: var(--primary);
-		font-size: 2.5rem;
+		font-size: 2rem;
 		margin: 2rem 0 1rem;
 		text-align: center;
 	}
@@ -58,13 +105,13 @@ import Layout from '../layouts/Layout.astro';
 		text-align: center;
 		color: var(--text);
 		margin-bottom: 3rem;
-		font-size: 1.2rem;
+		font-size: 1.1rem;
 	}
 
 	.contact-grid {
 		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-		gap: 4rem;
+		grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+		gap: 3rem;
 		margin-top: 2rem;
 	}
 
@@ -72,6 +119,7 @@ import Layout from '../layouts/Layout.astro';
 	.contact-form h2 {
 		color: var(--primary);
 		margin-bottom: 2rem;
+		font-size: 1.5rem;
 	}
 
 	.info-item {
@@ -81,6 +129,15 @@ import Layout from '../layouts/Layout.astro';
 	.info-item h3 {
 		color: var(--secondary);
 		margin-bottom: 0.5rem;
+		font-size: 1.1rem;
+	}
+
+	.contact-link {
+		color: var(--primary);
+		text-decoration: none;
+		display: inline-block;
+		padding: 0.5rem 0;
+		font-size: 1rem;
 	}
 
 	.form-group {
@@ -91,16 +148,20 @@ import Layout from '../layouts/Layout.astro';
 		display: block;
 		margin-bottom: 0.5rem;
 		color: var(--text);
+		font-size: 1rem;
 	}
 
 	input,
 	textarea {
 		width: 100%;
 		padding: 0.8rem;
-		border: 1px solid var(--neutral);
+		border: 2px solid var(--neutral);
 		border-radius: 4px;
 		font-family: inherit;
+		font-size: 1rem;
 		background-color: white;
+		transition: border-color 0.3s ease;
+		-webkit-appearance: none;
 	}
 
 	input:focus,
@@ -109,9 +170,33 @@ import Layout from '../layouts/Layout.astro';
 		border-color: var(--primary);
 	}
 
-	button[type="submit"] {
-		width: 100%;
-		border: none;
-		cursor: pointer;
+	input.error,
+	textarea.error {
+		border-color: #ff3333;
+	}
+
+	@media (max-width: 768px) {
+		.contact-grid {
+			gap: 2rem;
+		}
+
+		input,
+		textarea,
+		button {
+			font-size: 16px;
+			padding: 0.8rem;
+		}
+
+		.contact-link {
+			padding: 0.8rem 0;
+		}
+	}
+
+	@media (hover: none) {
+		.contact-link {
+			min-height: 44px;
+			display: flex;
+			align-items: center;
+		}
 	}
 </style>
