@@ -5,7 +5,7 @@ import Layout from '../layouts/Layout.astro';
 <Layout title="Atom - Innovating Across Industries">
 	<div class="hero">
 		<div class="hero-content">
-			<div class="hero-title">
+			<div class="hero-title animate-on-scroll">
 				<h1>Welcome to</h1>
 				<img 
 					src="/atom-logo-white.png" 
@@ -16,24 +16,35 @@ import Layout from '../layouts/Layout.astro';
 					loading="eager"
 				/>
 			</div>
-			<p class="hero-tagline">Innovating across industries, powering the future</p>
-			<a href="/ventures" class="btn btn-hero">Explore Our Ventures</a>
+			<p class="hero-tagline animate-on-scroll">Innovating across industries, powering the future</p>
+			<a href="/ventures" class="btn btn-hero animate-on-scroll">
+				<span>Explore Our Ventures</span>
+				<div class="btn-shine"></div>
+			</a>
+		</div>
+		<div class="hero-shapes">
+			<div class="shape shape-1"></div>
+			<div class="shape shape-2"></div>
+			<div class="shape shape-3"></div>
 		</div>
 	</div>
 
 	<div class="container">
 		<section class="features">
-			<h2>Why Choose Atom?</h2>
+			<h2 class="animate-on-scroll">Why Choose Atom?</h2>
 			<div class="feature-grid">
-				<div class="feature-card">
+				<div class="feature-card animate-on-scroll">
+					<div class="feature-icon">🚀</div>
 					<h3>Innovation</h3>
 					<p>Pushing boundaries and creating breakthrough solutions</p>
 				</div>
-				<div class="feature-card">
+				<div class="feature-card animate-on-scroll">
+					<div class="feature-icon">💫</div>
 					<h3>Excellence</h3>
 					<p>Committed to delivering exceptional quality</p>
 				</div>
-				<div class="feature-card">
+				<div class="feature-card animate-on-scroll">
+					<div class="feature-icon">🌍</div>
 					<h3>Impact</h3>
 					<p>Making a difference across multiple industries</p>
 				</div>
@@ -46,19 +57,79 @@ import Layout from '../layouts/Layout.astro';
 	.hero {
 		background-color: var(--primary);
 		color: white;
-		min-height: 60vh;
+		min-height: 80vh;
 		display: flex;
 		align-items: center;
 		justify-content: center;
 		padding: 3rem 1rem;
 		text-align: center;
-		background-image: linear-gradient(135deg, var(--primary), var(--secondary));
+		position: relative;
+		overflow: hidden;
+		background: linear-gradient(135deg, var(--primary), var(--secondary));
+	}
+
+	.hero-shapes {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		z-index: 1;
+		pointer-events: none;
+	}
+
+	.shape {
+		position: absolute;
+		border-radius: 50%;
+		background: rgba(255, 255, 255, 0.1);
+		animation: float 20s infinite;
+	}
+
+	.shape-1 {
+		width: 300px;
+		height: 300px;
+		top: -150px;
+		left: -150px;
+		animation-delay: -5s;
+	}
+
+	.shape-2 {
+		width: 200px;
+		height: 200px;
+		top: 50%;
+		right: -100px;
+		animation-delay: -10s;
+	}
+
+	.shape-3 {
+		width: 150px;
+		height: 150px;
+		bottom: -75px;
+		left: 50%;
+		animation-delay: -15s;
+	}
+
+	@keyframes float {
+		0%, 100% {
+			transform: translate(0, 0);
+		}
+		25% {
+			transform: translate(50px, 50px);
+		}
+		50% {
+			transform: translate(0, 100px);
+		}
+		75% {
+			transform: translate(-50px, 50px);
+		}
 	}
 
 	.hero-content {
 		max-width: 800px;
 		margin: 0 auto;
 		padding: 0 1rem;
+		position: relative;
+		z-index: 2;
 	}
 
 	.hero-title {
@@ -70,15 +141,27 @@ import Layout from '../layouts/Layout.astro';
 	}
 
 	.hero h1 {
-		font-size: 2rem;
+		font-size: 2.5rem;
 		margin: 0;
 		line-height: 1.2;
+		text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
 	}
 
 	.hero-logo {
 		height: auto;
 		max-width: 160px;
 		width: 100%;
+		filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.1));
+		animation: pulse 2s infinite;
+	}
+
+	@keyframes pulse {
+		0%, 100% {
+			transform: scale(1);
+		}
+		50% {
+			transform: scale(1.05);
+		}
 	}
 
 	.hero-tagline {
@@ -89,6 +172,7 @@ import Layout from '../layouts/Layout.astro';
 		max-width: 600px;
 		margin-left: auto;
 		margin-right: auto;
+		text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
 	}
 
 	.btn-hero {
@@ -100,16 +184,34 @@ import Layout from '../layouts/Layout.astro';
 		align-items: center;
 		justify-content: center;
 		text-align: center;
-		border-radius: 8px;
+		border-radius: 12px;
 		background-color: white;
 		color: var(--primary);
 		font-weight: 600;
-		transition: transform 0.2s ease, background-color 0.2s ease;
+		position: relative;
+		overflow: hidden;
 	}
 
-	.btn-hero:hover {
-		background-color: var(--neutral);
-		transform: translateY(-2px);
+	.btn-shine {
+		position: absolute;
+		top: -50%;
+		left: -50%;
+		width: 200%;
+		height: 200%;
+		background: linear-gradient(
+			45deg,
+			transparent,
+			rgba(255, 255, 255, 0.3),
+			transparent
+		);
+		transform: translateX(-100%);
+		animation: shine 3s infinite;
+	}
+
+	@keyframes shine {
+		100% {
+			transform: translateX(100%);
+		}
 	}
 
 	.features {
@@ -121,33 +223,81 @@ import Layout from '../layouts/Layout.astro';
 		margin-bottom: 3rem;
 		font-size: 2rem;
 		color: var(--primary);
+		position: relative;
+	}
+
+	.features h2::after {
+		content: '';
+		position: absolute;
+		bottom: -10px;
+		left: 50%;
+		transform: translateX(-50%);
+		width: 60px;
+		height: 3px;
+		background: var(--primary);
+		border-radius: 3px;
 	}
 
 	.feature-grid {
 		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+		grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
 		gap: 2rem;
 	}
 
 	.feature-card {
-		background-color: white;
+		background: rgba(255, 255, 255, 0.8);
+		backdrop-filter: blur(10px);
 		padding: 2rem;
-		border-radius: 8px;
+		border-radius: 20px;
 		text-align: center;
-		box-shadow: 0 2px 4px rgba(255, 102, 0, 0.1);
-		transition: transform 0.3s ease;
+		transition: all 0.3s var(--transition-bounce);
+		border: 1px solid rgba(255, 102, 0, 0.1);
+		position: relative;
+		overflow: hidden;
+	}
+
+	.feature-card::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background: linear-gradient(135deg, rgba(255, 102, 0, 0.1), transparent);
+		opacity: 0;
+		transition: opacity 0.3s ease;
 	}
 
 	.feature-card:hover {
 		transform: translateY(-5px);
 	}
 
+	.feature-card:hover::before {
+		opacity: 1;
+	}
+
+	.feature-icon {
+		font-size: 2.5rem;
+		margin-bottom: 1rem;
+		transform-origin: center;
+		animation: bounce 2s infinite;
+	}
+
+	@keyframes bounce {
+		0%, 100% {
+			transform: translateY(0);
+		}
+		50% {
+			transform: translateY(-10px);
+		}
+	}
+
 	.feature-card h3 {
 		color: var(--primary);
 		margin-bottom: 1rem;
+		font-size: 1.25rem;
 	}
 
-	/* Mobile optimizations */
 	@media (max-width: 768px) {
 		.hero {
 			min-height: 70vh;
@@ -155,7 +305,7 @@ import Layout from '../layouts/Layout.astro';
 		}
 
 		.hero h1 {
-			font-size: 1.75rem;
+			font-size: 2rem;
 		}
 
 		.hero-logo {
@@ -165,28 +315,25 @@ import Layout from '../layouts/Layout.astro';
 		.hero-tagline {
 			font-size: 1.125rem;
 			margin-bottom: 1.75rem;
-			padding: 0 0.5rem;
 		}
 
 		.btn-hero {
 			width: 100%;
 			max-width: 300px;
 		}
+
+		.feature-card {
+			padding: 1.5rem;
+		}
 	}
 
-	/* Small mobile devices */
 	@media (max-width: 480px) {
 		.hero {
 			min-height: 60vh;
-			padding: 1.5rem 1rem;
-		}
-
-		.hero-title {
-			gap: 0.75rem;
 		}
 
 		.hero h1 {
-			font-size: 1.5rem;
+			font-size: 1.75rem;
 		}
 
 		.hero-logo {
@@ -195,26 +342,14 @@ import Layout from '../layouts/Layout.astro';
 
 		.hero-tagline {
 			font-size: 1rem;
-			margin-bottom: 1.5rem;
 		}
 
-		.btn-hero {
-			font-size: 1rem;
-			padding: 0.875rem 1.5rem;
+		.feature-icon {
+			font-size: 2rem;
 		}
 	}
 
-	/* Touch optimization */
 	@media (hover: none) {
-		.btn-hero {
-			min-height: 44px;
-			padding: 0.875rem 1.5rem;
-		}
-
-		.btn-hero:hover {
-			transform: none;
-		}
-
 		.feature-card:hover {
 			transform: none;
 		}

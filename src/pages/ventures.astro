@@ -6,37 +6,49 @@ const ventures = [
 		title: "Atom Imagixio",
 		description: "Next-level tech that'll blow your mind 🚀",
 		link: "/ventures/imagixio",
-		logo: "/atom-imagixio-logo.png"
+		logo: "/atom-imagixio-logo.png",
+		gradient: "var(--gradient-1)"
 	},
 	{
 		title: "Atom Mobile",
-		description: "Your phone's new BFF - we just get it! 📱",
+		description: "Your automobile's new BFF - we just get it! 📱",
 		link: "/ventures/mobile",
-		logo: "/atom-mobile-logo.png"
+		logo: "/atom-mobile-logo.png",
+		gradient: "var(--gradient-2)"
 	},
 	{
 		title: "Atom Melon",
 		description: "Glow up your life with smart beauty tech ✨",
 		link: "/ventures/melon",
-		logo: "/atom-melon-logo.png"
+		logo: "/atom-melon-logo.png",
+		gradient: "var(--gradient-3)"
 	},
 	{
 		title: "Atom Optimus",
 		description: "Making money moves with future-proof solutions 💎",
 		link: "/ventures/optimus",
-		logo: "/atom-optimus-logo.png"
+		logo: "/atom-optimus-logo.png",
+		gradient: "var(--gradient-4)"
 	}
 ];
 ---
 
 <Layout title="Our Ventures - Atom">
+	<div class="hero">
+		<div class="hero-content">
+			<h1 class="animate-on-scroll">Our Ventures</h1>
+			<p class="subtitle animate-on-scroll">Check out our super cool family of brands</p>
+		</div>
+		<div class="hero-shapes">
+			<div class="shape shape-1"></div>
+			<div class="shape shape-2"></div>
+		</div>
+	</div>
+	
 	<div class="container">
-		<h1>Our Ventures</h1>
-		<p class="subtitle">Check out our super cool family of brands</p>
-		
 		<div class="ventures-grid">
-			{ventures.map(venture => (
-				<div class="venture-card">
+			{ventures.map((venture, index) => (
+				<div class="venture-card animate-on-scroll" style={`--card-gradient: ${venture.gradient}`}>
 					<div class="venture-logo">
 						<img 
 							src={venture.logo} 
@@ -68,44 +80,94 @@ const ventures = [
 		--gradient-4: linear-gradient(135deg, #6C63FF, #3F3D56);
 	}
 
-	h1 {
-		color: var(--primary);
-		font-size: clamp(2rem, 5vw, 3rem);
-		margin: 2rem 0 1rem;
-		text-align: center;
-		font-weight: 800;
+	.hero {
 		background: linear-gradient(135deg, var(--primary), var(--secondary));
-		-webkit-background-clip: text;
-		-webkit-text-fill-color: transparent;
-		background-clip: text;
+		color: white;
+		padding: 4rem var(--container-padding);
+		text-align: center;
+		position: relative;
+		overflow: hidden;
+	}
+
+	.hero-content {
+		position: relative;
+		z-index: 2;
+	}
+
+	.hero-shapes {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		z-index: 1;
+		pointer-events: none;
+	}
+
+	.shape {
+		position: absolute;
+		border-radius: 50%;
+		background: rgba(255, 255, 255, 0.1);
+		animation: float 20s infinite var(--transition-smooth);
+	}
+
+	.shape-1 {
+		width: 300px;
+		height: 300px;
+		top: -150px;
+		left: -150px;
+	}
+
+	.shape-2 {
+		width: 200px;
+		height: 200px;
+		bottom: -100px;
+		right: -100px;
+		animation-delay: -10s;
+	}
+
+	@keyframes float {
+		0%, 100% { transform: translate(0, 0) rotate(0deg); }
+		25% { transform: translate(50px, 50px) rotate(90deg); }
+		50% { transform: translate(0, 100px) rotate(180deg); }
+		75% { transform: translate(-50px, 50px) rotate(270deg); }
+	}
+
+	h1 {
+		font-size: clamp(2rem, 5vw, 3rem);
+		margin-bottom: 1rem;
+		font-weight: 800;
+		text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
 	}
 
 	.subtitle {
-		text-align: center;
-		color: var(--text);
-		margin-bottom: 3rem;
 		font-size: clamp(1.1rem, 3vw, 1.3rem);
-		font-weight: 500;
+		opacity: 0.9;
+		max-width: 600px;
+		margin: 0 auto;
+		text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
 	}
 
 	.ventures-grid {
 		display: grid;
 		grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
 		gap: 2rem;
-		margin-top: 2rem;
+		margin-top: -4rem;
 		padding: 0.5rem;
 	}
 
 	.venture-card {
 		background: rgba(255, 255, 255, 0.8);
 		backdrop-filter: blur(10px);
+		-webkit-backdrop-filter: blur(10px);
 		border-radius: 24px;
 		padding: 2rem;
-		transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+		transition: all 0.3s var(--transition-bounce);
 		position: relative;
 		overflow: hidden;
-		border: 1px solid rgba(255, 255, 255, 0.1);
+		border: 1px solid rgba(255, 255, 255, 0.2);
 		box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+		will-change: transform;
 	}
 
 	.venture-card::before {
@@ -115,21 +177,9 @@ const ventures = [
 		left: 0;
 		right: 0;
 		height: 4px;
-		background: var(--gradient-1);
+		background: var(--card-gradient);
 		opacity: 0;
-		transition: opacity 0.3s ease;
-	}
-
-	.venture-card:nth-child(2)::before {
-		background: var(--gradient-2);
-	}
-
-	.venture-card:nth-child(3)::before {
-		background: var(--gradient-3);
-	}
-
-	.venture-card:nth-child(4)::before {
-		background: var(--gradient-4);
+		transition: opacity 0.3s var(--transition-smooth);
 	}
 
 	.venture-card:hover {
@@ -147,7 +197,7 @@ const ventures = [
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		transition: transform 0.3s ease;
+		transition: transform 0.3s var(--transition-bounce);
 	}
 
 	.venture-card:hover .venture-logo {
@@ -158,9 +208,6 @@ const ventures = [
 		height: 100px;
 		width: auto;
 		object-fit: contain;
-		object-position: center;
-		image-rendering: -webkit-optimize-contrast;
-		image-rendering: crisp-edges;
 	}
 
 	.venture-card h2 {
@@ -185,15 +232,16 @@ const ventures = [
 		border-radius: 12px;
 		font-weight: 600;
 		font-size: 1.1rem;
-		background: var(--primary);
-		color: white;
-		transition: all 0.3s ease;
 		width: 100%;
 		justify-content: center;
+		background-image: var(--card-gradient);
+		position: relative;
+		overflow: hidden;
+		transition: all 0.3s var(--transition-bounce);
 	}
 
 	.btn-gradient svg {
-		transition: transform 0.3s ease;
+		transition: transform 0.3s var(--transition-smooth);
 	}
 
 	.btn-gradient:hover svg {
@@ -201,23 +249,41 @@ const ventures = [
 	}
 
 	.btn-gradient:hover {
-		background: var(--dark);
 		transform: translateY(-2px);
+		opacity: 0.9;
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.venture-card,
+		.venture-logo,
+		.btn-gradient,
+		.shape {
+			animation: none;
+			transition: none;
+		}
+
+		.venture-card:hover {
+			transform: none;
+		}
+
+		.btn-gradient:hover svg {
+			transform: none;
+		}
 	}
 
 	@media (max-width: 768px) {
+		.hero {
+			padding: 3rem var(--container-padding);
+		}
+
 		.ventures-grid {
+			margin-top: -2rem;
 			gap: 1.5rem;
 			padding: 0;
 		}
 
 		.venture-card {
 			padding: 1.5rem;
-		}
-
-		.btn-gradient {
-			padding: 1rem;
-			font-size: 1rem;
 		}
 	}
 

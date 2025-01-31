@@ -3,64 +3,90 @@ import Layout from '../layouts/Layout.astro';
 ---
 
 <Layout title="Contact Us - Atom">
-	<div class="container">
-		<h1>Contact Us</h1>
-		<p class="subtitle">Get in touch with our team</p>
+	<div class="hero">
+		<div class="hero-content">
+			<h1 class="animate-on-scroll">Contact Us</h1>
+			<p class="subtitle animate-on-scroll">Get in touch with our team</p>
+		</div>
+		<div class="hero-shapes">
+			<div class="shape shape-1"></div>
+			<div class="shape shape-2"></div>
+		</div>
+	</div>
 
+	<div class="container">
 		<div class="contact-grid">
-			<div class="contact-info">
-				<h2>Contact Information</h2>
-				<div class="info-item">
-					<h3>Address</h3>
-					<p>123 Innovation Street<br>Tech City, TC 12345</p>
-				</div>
-				<div class="info-item">
-					<h3>Email</h3>
-					<a href="mailto:info@atomcompany.com" class="contact-link">info@atomcompany.com</a>
-				</div>
-				<div class="info-item">
-					<h3>Phone</h3>
-					<a href="tel:+15551234567" class="contact-link">+1 (555) 123-4567</a>
+			<div class="contact-info animate-on-scroll">
+				<div class="info-card">
+					<h2>Contact Information</h2>
+					<div class="info-items">
+						<div class="info-item">
+							<div class="info-icon">📍</div>
+							<h3>Address</h3>
+							<p>123 Innovation Street<br>Tech City, TC 12345</p>
+						</div>
+						<div class="info-item">
+							<div class="info-icon">📧</div>
+							<h3>Email</h3>
+							<a href="mailto:info@atomcompany.com" class="contact-link">info@atomcompany.com</a>
+						</div>
+						<div class="info-item">
+							<div class="info-icon">📱</div>
+							<h3>Phone</h3>
+							<a href="tel:+15551234567" class="contact-link">+1 (555) 123-4567</a>
+						</div>
+					</div>
 				</div>
 			</div>
 
-			<div class="contact-form">
-				<h2>Send us a message</h2>
-				<form id="contactForm" novalidate>
-					<div class="form-group">
-						<label for="name">Name</label>
-						<input 
-							type="text" 
-							id="name" 
-							name="name" 
-							required 
-							minlength="2"
-							autocomplete="name"
-							pattern="[A-Za-z\s]+"
-						>
-					</div>
-					<div class="form-group">
-						<label for="email">Email</label>
-						<input 
-							type="email" 
-							id="email" 
-							name="email" 
-							required
-							autocomplete="email"
-						>
-					</div>
-					<div class="form-group">
-						<label for="message">Message</label>
-						<textarea 
-							id="message" 
-							name="message" 
-							rows="5" 
-							required
-							minlength="10"
-						></textarea>
-					</div>
-					<button type="submit" class="btn">Send Message</button>
-				</form>
+			<div class="contact-form animate-on-scroll">
+				<div class="form-card">
+					<h2>Send us a message</h2>
+					<form id="contactForm" novalidate>
+						<div class="form-group">
+							<label for="name">Name</label>
+							<input 
+								type="text" 
+								id="name" 
+								name="name" 
+								required 
+								minlength="2"
+								autocomplete="name"
+								pattern="[A-Za-z\s]+"
+							>
+							<div class="form-feedback"></div>
+						</div>
+						<div class="form-group">
+							<label for="email">Email</label>
+							<input 
+								type="email" 
+								id="email" 
+								name="email" 
+								required
+								autocomplete="email"
+							>
+							<div class="form-feedback"></div>
+						</div>
+						<div class="form-group">
+							<label for="message">Message</label>
+							<textarea 
+								id="message" 
+								name="message" 
+								rows="5" 
+								required
+								minlength="10"
+							></textarea>
+							<div class="form-feedback"></div>
+						</div>
+						<button type="submit" class="btn btn-gradient">
+							<span>Send Message</span>
+							<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+								<line x1="5" y1="12" x2="19" y2="12"></line>
+								<polyline points="12 5 19 12 12 19"></polyline>
+							</svg>
+						</button>
+					</form>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -70,14 +96,43 @@ import Layout from '../layouts/Layout.astro';
 	const form = document.getElementById('contactForm') as HTMLFormElement;
 	const inputs = form?.querySelectorAll('input, textarea');
 
+	const showFeedback = (input: HTMLInputElement | HTMLTextAreaElement, isValid: boolean) => {
+		const feedback = input.parentElement?.querySelector('.form-feedback');
+		if (!feedback) return;
+
+		if (!isValid) {
+			let message = 'Please fill out this field';
+			if (input.validity.typeMismatch && input.type === 'email') {
+				message = 'Please enter a valid email address';
+			} else if (input.validity.patternMismatch) {
+				message = 'Please use only letters and spaces';
+			} else if (input.validity.tooShort) {
+				message = `Please use at least ${input.minLength} characters`;
+			}
+			feedback.textContent = message;
+			feedback.classList.add('error');
+		} else {
+			feedback.textContent = '';
+			feedback.classList.remove('error');
+		}
+	};
+
 	inputs?.forEach(input => {
 		input.addEventListener('invalid', (e) => {
 			e.preventDefault();
 			input.classList.add('error');
+			showFeedback(input as HTMLInputElement | HTMLTextAreaElement, false);
 		});
 
 		input.addEventListener('input', () => {
 			input.classList.remove('error');
+			showFeedback(input as HTMLInputElement | HTMLTextAreaElement, input.checkValidity());
+		});
+
+		input.addEventListener('blur', () => {
+			if (input.value) {
+				showFeedback(input as HTMLInputElement | HTMLTextAreaElement, input.checkValidity());
+			}
 		});
 	});
 
@@ -86,6 +141,12 @@ import Layout from '../layouts/Layout.astro';
 		if (form.checkValidity()) {
 			// Handle form submission
 			console.log('Form submitted');
+			form.reset();
+			inputs?.forEach(input => {
+				input.classList.remove('error');
+				const feedback = input.parentElement?.querySelector('.form-feedback');
+				if (feedback) feedback.textContent = '';
+			});
 		} else {
 			// Show validation messages
 			form.reportValidity();
@@ -94,54 +155,148 @@ import Layout from '../layouts/Layout.astro';
 </script>
 
 <style>
-	h1 {
-		color: var(--primary);
-		font-size: 2rem;
-		margin: 2rem 0 1rem;
+	.hero {
+		background: linear-gradient(135deg, var(--primary), var(--secondary));
+		color: white;
+		padding: 4rem var(--container-padding);
 		text-align: center;
+		position: relative;
+		overflow: hidden;
+	}
+
+	.hero-content {
+		position: relative;
+		z-index: 2;
+	}
+
+	.hero-shapes {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		z-index: 1;
+		pointer-events: none;
+	}
+
+	.shape {
+		position: absolute;
+		border-radius: 50%;
+		background: rgba(255, 255, 255, 0.1);
+		animation: float 20s infinite var(--transition-smooth);
+	}
+
+	.shape-1 {
+		width: 300px;
+		height: 300px;
+		top: -150px;
+		left: -150px;
+	}
+
+	.shape-2 {
+		width: 200px;
+		height: 200px;
+		bottom: -100px;
+		right: -100px;
+		animation-delay: -10s;
+	}
+
+	@keyframes float {
+		0%, 100% { transform: translate(0, 0) rotate(0deg); }
+		25% { transform: translate(50px, 50px) rotate(90deg); }
+		50% { transform: translate(0, 100px) rotate(180deg); }
+		75% { transform: translate(-50px, 50px) rotate(270deg); }
+	}
+
+	h1 {
+		font-size: clamp(2rem, 5vw, 3rem);
+		margin-bottom: 1rem;
+		font-weight: 800;
+		text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
 	}
 
 	.subtitle {
-		text-align: center;
-		color: var(--text);
-		margin-bottom: 3rem;
-		font-size: 1.1rem;
+		font-size: clamp(1.1rem, 3vw, 1.3rem);
+		opacity: 0.9;
+		max-width: 600px;
+		margin: 0 auto;
+		text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
 	}
 
 	.contact-grid {
 		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-		gap: 3rem;
-		margin-top: 2rem;
+		grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+		gap: 2rem;
+		margin-top: -2rem;
 	}
 
-	.contact-info h2,
-	.contact-form h2 {
+	.info-card,
+	.form-card {
+		background: rgba(255, 255, 255, 0.8);
+		backdrop-filter: blur(10px);
+		-webkit-backdrop-filter: blur(10px);
+		border-radius: 24px;
+		padding: 2rem;
+		box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+		border: 1px solid rgba(255, 255, 255, 0.2);
+		height: 100%;
+	}
+
+	h2 {
 		color: var(--primary);
-		margin-bottom: 2rem;
 		font-size: 1.5rem;
+		margin-bottom: 2rem;
+		position: relative;
+	}
+
+	h2::after {
+		content: '';
+		position: absolute;
+		bottom: -10px;
+		left: 0;
+		width: 40px;
+		height: 3px;
+		background: var(--primary);
+		border-radius: 3px;
+	}
+
+	.info-items {
+		display: flex;
+		flex-direction: column;
+		gap: 2rem;
 	}
 
 	.info-item {
-		margin-bottom: 2rem;
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+	}
+
+	.info-icon {
+		font-size: 2rem;
+		margin-bottom: 0.5rem;
 	}
 
 	.info-item h3 {
-		color: var(--secondary);
-		margin-bottom: 0.5rem;
+		color: var(--primary);
 		font-size: 1.1rem;
 	}
 
 	.contact-link {
-		color: var(--primary);
+		color: var(--text);
 		text-decoration: none;
+		transition: all 0.3s var(--transition-smooth);
 		display: inline-block;
-		padding: 0.5rem 0;
-		font-size: 1rem;
+	}
+
+	.contact-link:hover {
+		color: var(--primary);
+		transform: translateX(4px);
 	}
 
 	.form-group {
 		margin-bottom: 1.5rem;
+		position: relative;
 	}
 
 	label {
@@ -149,54 +304,126 @@ import Layout from '../layouts/Layout.astro';
 		margin-bottom: 0.5rem;
 		color: var(--text);
 		font-size: 1rem;
+		font-weight: 500;
 	}
 
 	input,
 	textarea {
 		width: 100%;
 		padding: 0.8rem;
-		border: 2px solid var(--neutral);
-		border-radius: 4px;
+		border: 2px solid transparent;
+		border-radius: 12px;
 		font-family: inherit;
 		font-size: 1rem;
 		background-color: white;
-		transition: border-color 0.3s ease;
+		transition: all 0.3s var(--transition-smooth);
 		-webkit-appearance: none;
+		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 	}
 
 	input:focus,
 	textarea:focus {
 		outline: none;
 		border-color: var(--primary);
+		box-shadow: 0 0 0 4px rgba(255, 102, 0, 0.1);
 	}
 
 	input.error,
 	textarea.error {
 		border-color: #ff3333;
+		box-shadow: 0 0 0 4px rgba(255, 51, 51, 0.1);
+	}
+
+	.form-feedback {
+		position: absolute;
+		bottom: -20px;
+		left: 0;
+		font-size: 0.875rem;
+		color: #ff3333;
+		opacity: 0;
+		transform: translateY(-4px);
+		transition: all 0.3s var(--transition-smooth);
+	}
+
+	.form-feedback.error {
+		opacity: 1;
+		transform: translateY(0);
+	}
+
+	.btn-gradient {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.5rem;
+		padding: 0.875rem 1.5rem;
+		border-radius: 12px;
+		font-weight: 600;
+		font-size: 1.1rem;
+		width: 100%;
+		justify-content: center;
+		background-image: linear-gradient(135deg, var(--primary), var(--secondary));
+		position: relative;
+		overflow: hidden;
+	}
+
+	.btn-gradient svg {
+		transition: transform 0.3s var(--transition-smooth);
+	}
+
+	.btn-gradient:hover svg {
+		transform: translateX(4px);
+	}
+
+	.btn-gradient:hover {
+		transform: translateY(-2px);
+		opacity: 0.9;
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.shape {
+			animation: none;
+		}
+
+		.contact-link:hover,
+		.btn-gradient:hover {
+			transform: none;
+		}
+
+		.btn-gradient:hover svg {
+			transform: none;
+		}
 	}
 
 	@media (max-width: 768px) {
+		.hero {
+			padding: 3rem var(--container-padding);
+		}
+
 		.contact-grid {
-			gap: 2rem;
+			margin-top: -1rem;
 		}
 
-		input,
-		textarea,
-		button {
-			font-size: 16px;
-			padding: 0.8rem;
-		}
-
-		.contact-link {
-			padding: 0.8rem 0;
+		.info-card,
+		.form-card {
+			padding: 1.5rem;
 		}
 	}
 
 	@media (hover: none) {
-		.contact-link {
+		.contact-link:hover {
+			transform: none;
+		}
+
+		.btn-gradient {
 			min-height: 44px;
-			display: flex;
-			align-items: center;
+		}
+
+		.btn-gradient:hover {
+			transform: none;
+		}
+
+		input,
+		textarea {
+			font-size: 16px;
 		}
 	}
 </style>

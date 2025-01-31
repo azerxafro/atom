@@ -52,7 +52,7 @@ const { title } = Astro.props;
 </html>
 
 <script>
-	// Mobile menu functionality
+	// Mobile menu functionality with smooth animations
 	const menuToggle = document.querySelector('.menu-toggle');
 	const navMenu = document.querySelector('.nav-menu');
 	const header = document.querySelector('header');
@@ -60,6 +60,7 @@ const { title } = Astro.props;
 	menuToggle?.addEventListener('click', () => {
 		navMenu?.classList.toggle('active');
 		menuToggle?.classList.toggle('active');
+		document.body.classList.toggle('menu-open');
 	});
 
 	// Close menu when clicking outside
@@ -67,34 +68,40 @@ const { title } = Astro.props;
 		if (!header?.contains(e.target as Node)) {
 			navMenu?.classList.remove('active');
 			menuToggle?.classList.remove('active');
+			document.body.classList.remove('menu-open');
 		}
 	});
 
-	// Handle touch gestures
-	let touchStartX = 0;
-	let touchEndX = 0;
+	// Smooth scroll behavior
+	document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+		anchor.addEventListener('click', function (e) {
+			e.preventDefault();
+			const href = this.getAttribute('href');
+			if (href) {
+				document.querySelector(href)?.scrollIntoView({
+					behavior: 'smooth'
+				});
+			}
+		});
+	});
 
-	document.addEventListener('touchstart', (e) => {
-		touchStartX = e.changedTouches[0].screenX;
-	}, false);
+	// Add scroll animations
+	const observerOptions = {
+		threshold: 0.1,
+		rootMargin: '0px 0px -50px 0px'
+	};
 
-	document.addEventListener('touchend', (e) => {
-		touchEndX = e.changedTouches[0].screenX;
-		handleSwipe();
-	}, false);
+	const observer = new IntersectionObserver((entries) => {
+		entries.forEach(entry => {
+			if (entry.isIntersecting) {
+				entry.target.classList.add('in-view');
+			}
+		});
+	}, observerOptions);
 
-	function handleSwipe() {
-		const swipeThreshold = 50;
-		if (touchEndX < touchStartX - swipeThreshold) {
-			// Swipe left - open menu
-			navMenu?.classList.add('active');
-			menuToggle?.classList.add('active');
-		} else if (touchEndX > touchStartX + swipeThreshold) {
-			// Swipe right - close menu
-			navMenu?.classList.remove('active');
-			menuToggle?.classList.remove('active');
-		}
-	}
+	document.querySelectorAll('.animate-on-scroll').forEach((el) => {
+		observer.observe(el);
+	});
 </script>
 
 <style is:global>
@@ -107,6 +114,8 @@ const { title } = Astro.props;
 		--dark: #CC5200;
 		--header-height: 4rem;
 		--container-padding: 1rem;
+		--transition-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+		--transition-smooth: cubic-bezier(0.4, 0, 0.2, 1);
 	}
 	
 	* {
@@ -129,6 +138,11 @@ const { title } = Astro.props;
 		min-height: 100vh;
 		display: flex;
 		flex-direction: column;
+		overflow-x: hidden;
+	}
+
+	body.menu-open {
+		overflow: hidden;
 	}
 
 	main {
@@ -136,12 +150,15 @@ const { title } = Astro.props;
 	}
 
 	header {
-		background-color: white;
-		box-shadow: 0 2px 4px rgba(255, 102, 0, 0.1);
+		background-color: rgba(255, 255, 255, 0.9);
+		backdrop-filter: blur(10px);
+		-webkit-backdrop-filter: blur(10px);
+		box-shadow: 0 2px 20px rgba(255, 102, 0, 0.1);
 		position: sticky;
 		top: 0;
 		z-index: 1000;
 		height: var(--header-height);
+		transition: transform 0.3s var(--transition-smooth);
 	}
 
 	nav {
@@ -157,6 +174,11 @@ const { title } = Astro.props;
 	.logo img {
 		height: 40px;
 		width: auto;
+		transition: transform 0.3s var(--transition-bounce);
+	}
+
+	.logo img:hover {
+		transform: scale(1.05);
 	}
 
 	.menu-toggle {
@@ -174,7 +196,7 @@ const { title } = Astro.props;
 		height: 2px;
 		background-color: var(--primary);
 		margin: 5px 0;
-		transition: 0.3s;
+		transition: 0.3s var(--transition-bounce);
 	}
 
 	.menu-toggle.active span:nth-child(1) {
@@ -183,6 +205,7 @@ const { title } = Astro.props;
 
 	.menu-toggle.active span:nth-child(2) {
 		opacity: 0;
+		transform: translateX(-10px);
 	}
 
 	.menu-toggle.active span:nth-child(3) {
@@ -199,13 +222,32 @@ const { title } = Astro.props;
 		text-decoration: none;
 		color: var(--text);
 		font-weight: 500;
-		transition: color 0.3s ease;
+		transition: all 0.3s var(--transition-smooth);
 		padding: 0.5rem;
 		font-size: 1rem;
+		position: relative;
+	}
+
+	nav a::after {
+		content: '';
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		width: 100%;
+		height: 2px;
+		background: var(--primary);
+		transform: scaleX(0);
+		transform-origin: right;
+		transition: transform 0.3s var(--transition-smooth);
 	}
 
 	nav a:hover {
 		color: var(--primary);
+	}
+
+	nav a:hover::after {
+		transform: scaleX(1);
+		transform-origin: left;
 	}
 
 	footer {
@@ -213,6 +255,18 @@ const { title } = Astro.props;
 		color: white;
 		padding: 2rem var(--container-padding);
 		margin-top: 4rem;
+		position: relative;
+		overflow: hidden;
+	}
+
+	footer::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		height: 4px;
+		background: linear-gradient(90deg, var(--accent), var(--primary));
 	}
 
 	.footer-content {
@@ -237,31 +291,48 @@ const { title } = Astro.props;
 		background-color: var(--primary);
 		color: white;
 		text-decoration: none;
-		border-radius: 4px;
-		transition: background-color 0.3s ease;
+		border-radius: 12px;
+		transition: all 0.3s var(--transition-bounce);
 		font-size: 1rem;
 		border: none;
 		cursor: pointer;
 		touch-action: manipulation;
 		-webkit-appearance: none;
+		position: relative;
+		overflow: hidden;
+	}
+
+	.btn::after {
+		content: '';
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		width: 300%;
+		height: 300%;
+		background: rgba(255, 255, 255, 0.2);
+		transform: translate(-50%, -50%) scale(0);
+		border-radius: 50%;
+		transition: transform 0.5s var(--transition-smooth);
 	}
 
 	.btn:hover {
+		transform: translateY(-2px);
 		background-color: var(--dark);
 	}
 
-	.btn-accent {
-		background-color: var(--accent);
-		color: var(--text);
+	.btn:active::after {
+		transform: translate(-50%, -50%) scale(1);
 	}
 
-	.btn-accent:hover {
-		background-color: #FFE033;
+	.animate-on-scroll {
+		opacity: 0;
+		transform: translateY(20px);
+		transition: all 0.6s var(--transition-smooth);
 	}
 
-	img {
-		max-width: 100%;
-		height: auto;
+	.animate-on-scroll.in-view {
+		opacity: 1;
+		transform: translateY(0);
 	}
 
 	@media (max-width: 768px) {
@@ -273,14 +344,17 @@ const { title } = Astro.props;
 			position: fixed;
 			top: var(--header-height);
 			right: -100%;
-			width: 80%;
-			max-width: 300px;
+			width: 100%;
 			height: calc(100vh - var(--header-height));
-			background-color: white;
+			background-color: rgba(255, 255, 255, 0.98);
+			backdrop-filter: blur(10px);
+			-webkit-backdrop-filter: blur(10px);
 			flex-direction: column;
 			padding: 2rem;
-			transition: 0.3s ease-in-out;
-			box-shadow: -2px 0 4px rgba(0, 0, 0, 0.1);
+			transition: 0.3s var(--transition-bounce);
+			display: flex;
+			align-items: center;
+			justify-content: center;
 		}
 
 		.nav-menu.active {
@@ -289,13 +363,14 @@ const { title } = Astro.props;
 
 		nav ul {
 			flex-direction: column;
-			gap: 1.5rem;
+			gap: 2rem;
+			text-align: center;
 		}
 
 		nav a {
 			display: block;
-			padding: 0.75rem;
-			font-size: 1.1rem;
+			padding: 1rem;
+			font-size: 1.25rem;
 		}
 
 		.footer-content {
@@ -315,7 +390,6 @@ const { title } = Astro.props;
 		}
 	}
 
-	/* Touch optimization */
 	@media (hover: none) {
 		.btn, nav a {
 			padding: 0.8rem 1rem;
@@ -326,6 +400,14 @@ const { title } = Astro.props;
 			min-width: 44px;
 			display: flex;
 			align-items: center;
+		}
+
+		.btn:hover {
+			transform: none;
+		}
+
+		.logo img:hover {
+			transform: none;
 		}
 	}
 </style>
