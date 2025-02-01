@@ -23,17 +23,17 @@ import Layout from '../layouts/Layout.astro';
 						<div class="info-item">
 							<div class="info-icon">📍</div>
 							<h3>Address</h3>
-							<p>123 Innovation Street<br>Tech City, TC 12345</p>
+							<p>Coimbatore<br>Tamil Nadu, India 641016</p>
 						</div>
 						<div class="info-item">
 							<div class="info-icon">📧</div>
 							<h3>Email</h3>
-							<a href="mailto:info@atomcompany.com" class="contact-link">info@atomcompany.com</a>
+							<a href="mailto:imagixio.business@gmail.com" class="contact-link">imagixio.business@gmail.com</a>
 						</div>
 						<div class="info-item">
 							<div class="info-icon">📱</div>
 							<h3>Phone</h3>
-							<a href="tel:+15551234567" class="contact-link">+1 (555) 123-4567</a>
+							<a href="tel:+918778222061" class="contact-link">+918778222061</a>
 						</div>
 					</div>
 				</div>
@@ -126,12 +126,12 @@ import Layout from '../layouts/Layout.astro';
 
 		input.addEventListener('input', () => {
 			input.classList.remove('error');
-			showFeedback(input as HTMLInputElement | HTMLTextAreaElement, input.checkValidity());
+			showFeedback(input as HTMLInputElement | HTMLTextAreaElement, (input as HTMLInputElement | HTMLTextAreaElement).checkValidity());
 		});
 
 		input.addEventListener('blur', () => {
-			if (input.value) {
-				showFeedback(input as HTMLInputElement | HTMLTextAreaElement, input.checkValidity());
+			if ((input as HTMLInputElement | HTMLTextAreaElement).value) {
+				showFeedback(input as HTMLInputElement | HTMLTextAreaElement, (input as HTMLInputElement | HTMLTextAreaElement).checkValidity());
 			}
 		});
 	});
