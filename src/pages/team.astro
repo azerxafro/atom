@@ -1,0 +1,497 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const founders = [
+  {
+    name: "Ashwin Ramesh",
+    title: "Founder & CEO",
+    expertise: [
+      "Software Architecture & Development 🚀",
+      "Product Strategy & Innovation 💡",
+      "Technical Leadership 👨‍💻",
+      "AI & Machine Learning 🤖",
+      "Business Development 📈"
+    ],
+    social: {
+      instagram: "theashwinazer",
+      spotify: "https://open.spotify.com/artist/6M1VSmwtcuwS1DnvXTGk7P",
+      github: "https://github.com/azerxafro",
+      facebook: "https://www.facebook.com/ashwinxafro"
+    },
+    image: "https://api.dicebear.com/7.x/avataaars/png?seed=ashwin&backgroundColor=ffcc80"
+  }
+];
+
+const interns = [
+  {
+    name: "Gayathri Eswaran",
+    title: "Developer Intern & Team Lead",
+    expertise: [
+      "AWS Cloud Technical Essentials ☁️",
+      "IT Security: Defense Against Digital Dark Arts 🛡️",
+      "Generative AI 🎨"
+    ],
+    social: {
+      github: "gayathri",
+      linkedin: "gayathri-eswaran"
+    },
+    image: "https://api.dicebear.com/7.x/avataaars/png?seed=gayathri&backgroundColor=b3e5fc"
+  }
+];
+---
+
+<Layout title="Our Squad - Atom">
+  <div class="hero">
+    <div class="hero-content">
+      <h1 class="animate-on-scroll">Meet the Squad</h1>
+      <p class="subtitle animate-on-scroll">The coolest crew behind Atom's magic ✨</p>
+    </div>
+    <div class="hero-shapes">
+      <div class="shape shape-1"></div>
+      <div class="shape shape-2"></div>
+      <div class="shape shape-3"></div>
+      <div class="shape shape-4"></div>
+    </div>
+  </div>
+
+  <div class="container">
+    <!-- Founders Section -->
+    <section class="team-section founders-section">
+      <h2 class="section-title animate-on-scroll">The Visionaries</h2>
+      <div class="team-grid">
+        {founders.map(member => (
+          <div class="team-card animate-on-scroll">
+            <div class="member-image-wrapper">
+              <div class="member-image">
+                <img 
+                  src={member.image} 
+                  alt={member.name}
+                  width="400"
+                  height="400"
+                  loading="lazy"
+                />
+              </div>
+              <div class="image-overlay">
+                <span>✨ Founder Vibes ✨</span>
+              </div>
+            </div>
+            <div class="member-info">
+              <div class="member-header">
+                <h3>{member.name}</h3>
+                <p class="member-title">{member.title}</p>
+              </div>
+              
+              <div class="expertise">
+                <h4>Superpower Stack</h4>
+                <ul>
+                  {member.expertise.map(item => (
+                    <li>{item}</li>
+                  ))}
+                </ul>
+              </div>
+
+              <div class="social-links">
+                {member.social.instagram && (
+                  <a href={`https://instagram.com/${member.social.instagram}`} target="_blank" rel="noopener noreferrer" aria-label="Instagram" class="social-btn">
+                    <span class="social-icon">📸</span>
+                    <span class="social-label">Insta</span>
+                  </a>
+                )}
+                {member.social.spotify && (
+                  <a href={member.social.spotify} target="_blank" rel="noopener noreferrer" aria-label="Spotify" class="social-btn">
+                    <span class="social-icon">🎵</span>
+                    <span class="social-label">Spotify</span>
+                  </a>
+                )}
+                {member.social.github && (
+                  <a href={`https://github.com/${member.social.github}`} target="_blank" rel="noopener noreferrer" aria-label="GitHub" class="social-btn">
+                    <span class="social-icon">💻</span>
+                    <span class="social-label">GitHub</span>
+                  </a>
+                )}
+                {member.social.facebook && (
+                  <a href={member.social.facebook} target="_blank" rel="noopener noreferrer" aria-label="Facebook" class="social-btn">
+                    <span class="social-icon">👥</span>
+                    <span class="social-label">FB</span>
+                  </a>
+                )}
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- Interns Section -->
+    <section class="team-section interns-section">
+      <h2 class="section-title animate-on-scroll">Rising Stars</h2>
+      <div class="team-grid">
+        {interns.map(member => (
+          <div class="team-card animate-on-scroll">
+            <div class="member-image-wrapper">
+              <div class="member-image">
+                <img 
+                  src={member.image} 
+                  alt={member.name}
+                  width="300"
+                  height="300"
+                  loading="lazy"
+                />
+              </div>
+              <div class="image-overlay">
+                <span>🌟 Future Leader 🌟</span>
+              </div>
+            </div>
+            <div class="member-info">
+              <div class="member-header">
+                <h3>{member.name}</h3>
+                <p class="member-title">{member.title}</p>
+              </div>
+              
+              <div class="expertise">
+                <h4>Tech Arsenal</h4>
+                <ul>
+                  {member.expertise.map(item => (
+                    <li>{item}</li>
+                  ))}
+                </ul>
+              </div>
+
+              <div class="social-links">
+                {member.social.github && (
+                  <a href={`https://github.com/${member.social.github}`} target="_blank" rel="noopener noreferrer" aria-label="GitHub" class="social-btn">
+                    <span class="social-icon">💻</span>
+                    <span class="social-label">GitHub</span>
+                  </a>
+                )}
+                {member.social.linkedin && (
+                  <a href={`https://linkedin.com/in/${member.social.linkedin}`} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" class="social-btn">
+                    <span class="social-icon">💼</span>
+                    <span class="social-label">LinkedIn</span>
+                  </a>
+                )}
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+  </div>
+</Layout>
+
+<style>
+  .team-card {
+    position: relative;
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 24px;
+    overflow: hidden;
+    transition: all 0.3s var(--transition-bounce);
+    transform: translateY(0);
+    will-change: transform;
+  }
+
+  .team-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(45deg, 
+      rgba(255, 102, 0, 0.1),
+      rgba(255, 102, 0, 0.05),
+      rgba(255, 102, 0, 0)
+    );
+    opacity: 0;
+    transition: opacity 0.3s var(--transition-smooth);
+  }
+
+  .team-card:hover {
+    transform: translateY(-8px);
+  }
+
+  .team-card:hover::before {
+    opacity: 1;
+  }
+
+  .member-image {
+    position: relative;
+    overflow: hidden;
+    border-radius: 24px 24px 0 0;
+    aspect-ratio: 1;
+  }
+
+  .member-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s var(--transition-smooth);
+  }
+
+  .team-card:hover .member-image img {
+    transform: scale(1.05);
+  }
+
+  .member-info {
+    padding: 2rem;
+    position: relative;
+    z-index: 2;
+  }
+
+  .expertise li {
+    position: relative;
+    padding: 1rem 1.5rem;
+    background: rgba(255, 102, 0, 0.1);
+    border-radius: 12px;
+    margin-bottom: 0.75rem;
+    transition: all 0.3s var(--transition-bounce);
+    cursor: default;
+    overflow: hidden;
+  }
+
+  .expertise li::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: var(--primary);
+    transform: scaleY(0);
+    transform-origin: bottom;
+    transition: transform 0.3s var(--transition-bounce);
+  }
+
+  .expertise li:hover {
+    transform: translateX(8px);
+    background: rgba(255, 102, 0, 0.15);
+  }
+
+  .expertise li:hover::before {
+    transform: scaleY(1);
+  }
+
+  .social-btn {
+    position: relative;
+    overflow: hidden;
+    background: rgba(255, 102, 0, 0.1);
+    border-radius: 12px;
+    padding: 0.75rem 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.3s var(--transition-bounce);
+    will-change: transform;
+  }
+
+  .social-btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 120%;
+    height: 120%;
+    background: var(--primary);
+    border-radius: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    transition: transform 0.3s var(--transition-bounce);
+  }
+
+  .social-btn:hover {
+    transform: translateY(-2px);
+  }
+
+  .social-btn:hover::before {
+    transform: translate(-50%, -50%) scale(2);
+  }
+
+  .social-btn:active {
+    transform: translateY(0) scale(0.95);
+  }
+
+  .social-icon,
+  .social-label {
+    position: relative;
+    z-index: 1;
+    transition: color 0.3s var(--transition-smooth);
+  }
+
+  .social-btn:hover .social-icon,
+  .social-btn:hover .social-label {
+    color: white;
+  }
+
+  @media (hover: none) {
+    .team-card:hover {
+      transform: none;
+    }
+
+    .expertise li:hover {
+      transform: none;
+    }
+
+    .social-btn:hover {
+      transform: none;
+    }
+
+    .social-btn:active {
+      transform: scale(0.95);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .team-card,
+    .member-image img,
+    .expertise li,
+    .social-btn,
+    .social-btn::before {
+      transition: none;
+    }
+  }
+
+  .hero {
+    min-height: 60vh;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    position: relative;
+  }
+
+  .shape {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    animation: float 20s infinite var(--transition-bounce);
+    backdrop-filter: blur(5px);
+  }
+
+  .shape-3 {
+    width: 150px;
+    height: 150px;
+    top: 30%;
+    left: 20%;
+    animation-delay: -5s;
+  }
+
+  .shape-4 {
+    width: 100px;
+    height: 100px;
+    top: 60%;
+    right: 10%;
+    animation-delay: -15s;
+  }
+
+  .member-image-wrapper {
+    position: relative;
+    overflow: hidden;
+    border-radius: 24px 24px 0 0;
+  }
+
+  .image-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, rgba(255, 102, 0, 0.8), rgba(255, 102, 0, 0.4));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s var(--transition-bounce);
+  }
+
+  .image-overlay span {
+    color: white;
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-align: center;
+    padding: 1rem;
+    transform: translateY(20px);
+    transition: transform 0.3s var(--transition-bounce);
+  }
+
+  .member-image-wrapper:hover .image-overlay {
+    opacity: 1;
+  }
+
+  .member-image-wrapper:hover .image-overlay span {
+    transform: translateY(0);
+  }
+
+  .member-header {
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+
+  .social-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+    border-radius: 12px;
+    background: rgba(255, 102, 0, 0.1);
+    color: var(--text);
+    text-decoration: none;
+    transition: all 0.3s var(--transition-bounce);
+    flex: 1;
+  }
+
+  .social-icon {
+    font-size: 1.25rem;
+  }
+
+  .social-label {
+    font-size: 0.9rem;
+    font-weight: 600;
+  }
+
+  .social-btn:hover {
+    background: var(--primary);
+    color: white;
+    transform: translateY(-2px) scale(1.05);
+  }
+
+  .expertise li {
+    background: rgba(255, 102, 0, 0.1);
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    margin-bottom: 0.5rem;
+    transition: all 0.3s var(--transition-bounce);
+  }
+
+  .expertise li:hover {
+    background: rgba(255, 102, 0, 0.2);
+    transform: translateX(10px);
+  }
+
+  @media (max-width: 768px) {
+    .social-links {
+      flex-wrap: wrap;
+    }
+
+    .social-btn {
+      min-width: calc(50% - 0.5rem);
+    }
+
+    .image-overlay span {
+      font-size: 1.25rem;
+    }
+  }
+
+  @media (hover: none) {
+    .social-btn:hover {
+      transform: none;
+    }
+
+    .expertise li:hover {
+      transform: none;
+    }
+
+    .image-overlay {
+      opacity: 1;
+      background: linear-gradient(to bottom, rgba(255, 102, 0, 0.6), rgba(255, 102, 0, 0.3));
+    }
+
+    .image-overlay span {
+      transform: translateY(0);
+    }
+  }
+</style>
